@@ -30,4 +30,10 @@ public class User implements Serializable {
     @JsonIgnore
     private List<Bear> bearConsume;
 
+    @Override
+    public String toString(){
+        return "teste";
+
+    }
+
 }
