@@ -28,4 +28,12 @@ public class Bear implements Serializable {
 
     private Double cost;
 
+    @Override
+    public String toString() {
+        StringBuilder builder = new StringBuilder();
+        builder.append(this.name.toUpperCase()).append(" of type ").append(this.type.toUpperCase())
+        .append(" with cost: $").append(this.cost).append(".\n");
+        return builder.toString();
+    }
+
 }

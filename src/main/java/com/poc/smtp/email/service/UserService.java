@@ -1,7 +1,9 @@
 package com.poc.smtp.email.service;
 
+import com.poc.smtp.email.domain.Bear;
 import com.poc.smtp.email.domain.User;
 import com.poc.smtp.email.infrastruct.exceptions.ObjectNotFoundException;
+import com.poc.smtp.email.repository.BearRepository;
 import com.poc.smtp.email.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -13,6 +15,9 @@ public class UserService {
 
     @Autowired
     private UserRepository userRepository;
+
+    @Autowired
+    private BearRepository bearRepository;
 
     public List<User> findAll() {
         return userRepository.findAll();
@@ -36,6 +41,18 @@ public class UserService {
         User user = userRepository.findById(userId).orElseThrow(() ->
                 new ObjectNotFoundException("User with ID: " + userId + ", was not found."));
         user.setEmail(mail);
+        return userRepository.save(user);
+    }
+
+    public User consumeBear(Long userId, Long bearId) {
+        User user = userRepository.findById(userId).orElseThrow(() ->
+                new ObjectNotFoundException("User with ID: " + userId + ", was not found."));
+        List<Bear> bearList = user.getBearConsume();
+
+        Bear bear = bearRepository.findById(bearId).orElseThrow(() ->
+                new ObjectNotFoundException("Bear with ID: " + bearId + ", was not found."));
+
+        bearList.add(bear);
         return userRepository.save(user);
     }
 

@@ -48,6 +48,12 @@ public class UserController {
         return ResponseEntity.ok().body(obj);
     }
 
+    @RequestMapping(value = "/{id}/bear/{bearId}", method=RequestMethod.PUT)
+    public ResponseEntity<User> consumeBear(@PathVariable Long id, @PathVariable Long bearId){
+        User obj = service.consumeBear(id, bearId);
+        return ResponseEntity.ok().body(obj);
+    }
+
     @RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
     public ResponseEntity<Void> delete(@PathVariable Long id) {
         service.deleteUser(id);

@@ -1,6 +1,5 @@
 package com.poc.smtp.email.domain;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -27,13 +26,15 @@ public class User implements Serializable {
     private String email;
 
     @OneToMany
-    @JsonIgnore
     private List<Bear> bearConsume;
 
     @Override
     public String toString(){
-        return "teste";
-
+        StringBuilder builder = new StringBuilder();
+        builder.append("Hello, ").append(this.getName()).append("!\n\n");
+        builder.append("Until now you have consumed the following beers: \n\n");
+        builder.append(bearConsume.toString());
+        return builder.toString();
     }
 
 }
