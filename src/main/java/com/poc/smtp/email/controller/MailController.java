@@ -21,7 +21,7 @@ public class MailController {
 
     @RequestMapping(value = "/{id}", method= RequestMethod.POST)
     public ResponseEntity<Void> sendMail(@PathVariable Long id){
-        mailService.sendConsumeConfirmationEmail(userService.findById(id));
+        mailService.sendUserConfirmationEmail(userService.findById(id));
         return ResponseEntity.ok().build();
     }
 

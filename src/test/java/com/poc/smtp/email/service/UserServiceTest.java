@@ -1,8 +1,10 @@
 package com.poc.smtp.email.service;
 
 import com.poc.smtp.email.EmailApplicationTests;
+import com.poc.smtp.email.domain.Bear;
 import com.poc.smtp.email.domain.User;
 import com.poc.smtp.email.infrastruct.exceptions.ObjectNotFoundException;
+import com.poc.smtp.email.repository.BearRepository;
 import com.poc.smtp.email.repository.UserRepository;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.DisplayName;
@@ -26,6 +28,9 @@ public class UserServiceTest extends EmailApplicationTests {
 
     @Mock
     private UserRepository userRepository;
+
+    @Mock
+    private BearRepository bearRepository;
 
     @BeforeAll
     public static void BeforeClass(){
@@ -110,4 +115,32 @@ public class UserServiceTest extends EmailApplicationTests {
         assertThrows(ObjectNotFoundException.class, () -> userService.updateMail(66L, "foo"));
     }
 
+    @Test
+    @DisplayName("Shold consume one bear to user")
+    public void consumeBearTest() {
+        Bear bear = Bear.of(1L, "Serramalte", "Puro Malte", 4.09);
+        User user = User.of(1L, "test", "test@gamil.com", Collections.singletonList(bear));
+        when(userRepository.findById(1L)).thenReturn(Optional.of(user));
+        when(bearRepository.findById(1L)).thenReturn(Optional.of(bear));
+        user.consumeBear(bear);
+        when(userRepository.save(user)).thenReturn(user);
+        assertDoesNotThrow(() -> userService.consumeBear(1L,1L));
+    }
+
+    @Test
+    @DisplayName("Shold throw exception when try consume one invalid bear to user")
+    public void consumeInvalidBearTest() {
+        Bear bear = Bear.of(1L, "Serramalte", "Puro Malte", 4.09);
+        User user = User.of(1L, "test", "test@gamil.com", Collections.singletonList(bear));
+        when(userRepository.findById(1L)).thenReturn(Optional.of(user));
+        when(bearRepository.findById(1L)).thenReturn(Optional.empty());
+        assertThrows(ObjectNotFoundException.class, () -> userService.consumeBear(1L, 1L));
+    }
+
+    @Test
+    @DisplayName("Shold throw exception when try consume one bear to an invalid user")
+    public void consumeBearToInvalidUserTest() {
+        when(userRepository.findById(1L)).thenReturn(Optional.empty());
+        assertThrows(ObjectNotFoundException.class, () -> userService.consumeBear(1L, 1L));
+    }
 }

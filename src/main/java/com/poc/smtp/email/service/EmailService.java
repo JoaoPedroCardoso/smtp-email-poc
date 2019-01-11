@@ -5,7 +5,7 @@ import org.springframework.mail.SimpleMailMessage;
 
 public interface EmailService {
 
-    void sendConsumeConfirmationEmail(User user);
+    void sendUserConfirmationEmail(User user);
 
     void sendEmail (SimpleMailMessage msg);
 }

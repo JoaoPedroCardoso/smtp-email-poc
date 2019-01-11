@@ -6,6 +6,7 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -35,6 +36,13 @@ public class User implements Serializable {
         builder.append("Until now you have consumed the following beers: \n\n");
         builder.append(bearConsume.toString());
         return builder.toString();
+    }
+
+    public void consumeBear(Bear bear) {
+        List<Bear> bearList = new ArrayList<>();
+        bearList.addAll(this.getBearConsume());
+        bearList.add(bear);
+        this.setBearConsume(bearList);
     }
 
 }

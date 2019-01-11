@@ -15,12 +15,12 @@ public abstract class AbstractEmailService implements EmailService{
     private String subject;
 
     @Override
-    public void sendConsumeConfirmationEmail (User obj) {
-        SimpleMailMessage msg = prepareSimpleMailMessageFromConsume(obj);
+    public void sendUserConfirmationEmail(User obj) {
+        SimpleMailMessage msg = prepareSimpleMailMessageFromUser(obj);
         sendEmail(msg);
     }
 
-    protected SimpleMailMessage prepareSimpleMailMessageFromConsume(User obj) {
+    protected SimpleMailMessage prepareSimpleMailMessageFromUser(User obj) {
         SimpleMailMessage msg = new SimpleMailMessage();
         msg.setTo(obj.getEmail());
         msg.setFrom(this.sender);

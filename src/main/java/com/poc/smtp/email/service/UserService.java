@@ -47,12 +47,9 @@ public class UserService {
     public User consumeBear(Long userId, Long bearId) {
         User user = userRepository.findById(userId).orElseThrow(() ->
                 new ObjectNotFoundException("User with ID: " + userId + ", was not found."));
-        List<Bear> bearList = user.getBearConsume();
-
         Bear bear = bearRepository.findById(bearId).orElseThrow(() ->
                 new ObjectNotFoundException("Bear with ID: " + bearId + ", was not found."));
-
-        bearList.add(bear);
+        user.consumeBear(bear);
         return userRepository.save(user);
     }
 
